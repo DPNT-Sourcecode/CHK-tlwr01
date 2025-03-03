@@ -8,7 +8,6 @@
 - `Python 3.12`
 - `pip` (ensure it supports `Python 3.12`)
 
-
 ## 2. How to start
 
 - Install dependencies `pip install -r requirements.txt`

@@ -16,7 +16,7 @@ def checkout(skus: str) -> int:
     # Define "buy X get Y free" offers
     free_offers = {
         "E": (2, "B"),  # Buy 2E, get 1B free
-        "F": (2, "F")   # Buy 2F, get 1F free (i.e., 3F for 20)
+        "F": (3, "F")   # Buy 2F, get 1F free (i.e., 3F for 20)
     }
 
     # Validate input (return -1 for invalid characters)
@@ -47,5 +47,3 @@ def checkout(skus: str) -> int:
         total += count * prices[item]  # Regular price for remaining items
 
     return total
-
-

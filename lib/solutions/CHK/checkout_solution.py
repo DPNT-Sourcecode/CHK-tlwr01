@@ -25,12 +25,12 @@ def checkout(skus: str) -> int:
     # "Buy X get Y free" offers:
     # Format: trigger_item: (required_qty, free_item, free_count)
     free_offers = {
-        "E": (2, "B", 1),   # For every 2 E, one B is free.
-        "N": (3, "M", 1),   # For every 3 N, one M is free.
-        "R": (3, "Q", 1),   # For every 3 R, one Q is free.
-        "U": (3, "U", 1),   # For every 3 U, one U is free (i.e. pay for 2 out of 3).
-        "F": (3, "F", 1)    # For every 3 F, one F is free (i.e. pay for 2).
-    }
+    "E": (2, "B", 1),
+    "N": (3, "M", 1),
+    "R": (3, "Q", 1),
+    "U": (4, "U", 1),  # Now, only every 4 U's gives one free.
+    "F": (3, "F", 1)
+}
 
     # Validate input: if any SKU is not in prices, return -1.
     for ch in skus:

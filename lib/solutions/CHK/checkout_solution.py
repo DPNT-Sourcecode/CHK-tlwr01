@@ -45,6 +45,3 @@ def checkout(skus: str) -> int:
         total += count * prices[item]  # Regular price for remaining items
 
     return total
-
-
-

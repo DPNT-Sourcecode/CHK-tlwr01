@@ -9,6 +9,3 @@ class TestSum():
         assert sum_solution.compute(50,50) == 100
         assert sum_solution.compute(99,1) == 100
         print("All tests passed for SUM challenege!")
-
-
-

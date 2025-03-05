@@ -28,10 +28,11 @@ def checkout(skus: str) -> int:
     for item, count in item_counts.items():
         if item in offers:
             offer_qty, offer_price = offers[item]
-            total += (count // offer_qty) * offer_price  # Apply offer
+            total += (count // offer_qty) * offer_price  # Apply offer price
             total += (count % offer_qty) * prices[item]  # Add remaining items
         else:
             total += count * prices[item]  # Regular price for non-offer items
 
-    return total  # Ensure this return statement exists
+    return total
+
 

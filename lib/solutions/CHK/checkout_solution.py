@@ -3,12 +3,8 @@ from collections import Counter
 def checkout(skus: str) -> int:
     # Define item prices
     prices = {
-        "A": 50,
-        "B": 30,
-        "C": 20,
-        "D": 15,
-        "E": 40,
-        "F": 10
+        "A": 50, "B": 30, "C": 20, "D": 15,
+        "E": 40, "F": 10
     }
 
     # Define multi-buy special offers
@@ -31,12 +27,14 @@ def checkout(skus: str) -> int:
     # Count occurrences of each SKU
     item_counts = Counter(skus)
 
-    # Apply "buy X get Y free" offers
+    # Apply "buy X get Y free" offers BEFORE processing other prices
     for item, (req_qty, free_item) in free_offers.items():
         if item in item_counts:
-            free_items_count = item_counts[item] // (req_qty + 1)
+            free_items_count = item_counts[item] // req_qty
             if free_item in item_counts:
                 item_counts[free_item] = max(0, item_counts[free_item] - free_items_count)
+            else:
+                item_counts[free_item] = 0  # Ensure free item exists in counter
 
     # Calculate total price
     total = 0
@@ -49,4 +47,5 @@ def checkout(skus: str) -> int:
         total += count * prices[item]  # Regular price for remaining items
 
     return total
+
 

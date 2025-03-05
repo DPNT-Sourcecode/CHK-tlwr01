@@ -13,7 +13,6 @@ def checkout(skus: str) -> int:
     }
     
     # Multi-buy special offers for individual items
-    # Format: item -> list of (quantity, special_price), sorted descending by quantity later
     offers = {
         "A": [(5, 200), (3, 130)],
         "B": [(2, 45)],
@@ -24,30 +23,28 @@ def checkout(skus: str) -> int:
         "V": [(3, 130), (2, 90)]
     }
     
-    # "Buy X get Y free" offers:
-    # Format: trigger_item -> (required_qty, free_item, free_count)
+    # "Buy X get Y free" offers
     free_offers = {
         "E": (2, "B", 1),
         "N": (3, "M", 1),
         "R": (3, "Q", 1),
-        "U": (3, "U", 1),
+        "U": (4, "U", 1),  # For U: only every 4 U's gives one free.
         "F": (3, "F", 1)
     }
     
-    # Group discount offer for items S, T, X, Y, Z:
-    # "Buy any 3 of (S, T, X, Y, Z) for 45"
+    # Group discount for items S, T, X, Y, Z: buy any 3 for 45
     group_items = ["S", "T", "X", "Y", "Z"]
     group_offer_price = 45
     
-    # Validate input: if any SKU is invalid, return -1.
+    # Validate input: return -1 if any character is invalid
     for ch in skus:
         if ch not in prices:
             return -1
     
-    # Count all items
+    # Count items
     counts = Counter(skus)
     
-    # Apply "buy X get Y free" offers first.
+    # Apply "buy X get Y free" offers
     for trigger, (req_qty, free_item, free_count) in free_offers.items():
         if trigger in counts:
             free_items_earned = (counts[trigger] // req_qty) * free_count
@@ -55,30 +52,26 @@ def checkout(skus: str) -> int:
                 counts[free_item] = max(0, counts[free_item] - free_items_earned)
             else:
                 counts[free_item] = 0
-
+    
     total = 0
-
-    # Handle group discount for items S, T, X, Y, Z.
+    
+    # Process group discount for S, T, X, Y, Z
     group_list = []
     for item in group_items:
         if item in counts:
             group_list.extend([item] * counts[item])
-            # Remove these items from individual processing.
             del counts[item]
     if group_list:
-        # Sort the group items in descending order of price so that the highest-priced items are grouped first.
         group_list.sort(key=lambda item: prices[item], reverse=True)
         num_groups = len(group_list) // 3
         total += num_groups * group_offer_price
         remaining = len(group_list) % 3
         if remaining:
-            # Charge remaining items at individual prices.
             total += sum(prices[item] for item in group_list[-remaining:])
-
-    # Process remaining items (those not in the group discount)
+    
+    # Process remaining items with multi-buy offers
     for item, count in counts.items():
         if item in offers:
-            # Apply multi-buy offers, sorted descending by quantity.
             for offer_qty, offer_price in sorted(offers[item], key=lambda x: x[0], reverse=True):
                 num_offers = count // offer_qty
                 total += num_offers * offer_price
